@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "NewsArticle": {
+      "title": "News Article",
+      "description": "Cached news from external APIs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "source": { "type": "string" },
+        "url": { "type": "string" },
+        "category": { "type": "string" },
+        "publishedAt": { "type": "number" },
+        "createdAt": { "type": "number" },
+        "region": { "type": "string" },
+        "views": { "type": "number" },
+        "shares": { "type": "number" },
+        "trendingScore": { "type": "number" }
+      },
+      "required": ["id", "title", "url", "createdAt"]
+    },
+    "Bookmark": {
+      "title": "Bookmark",
+      "description": "User saved articles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "articleId": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["uid", "articleId", "createdAt"]
+    },
+    "CustomPost": {
+      "title": "Custom Post",
+      "description": "Admin manually created posts",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "content": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" },
+        "published": { "type": "boolean" },
+        "authorUid": { "type": "string" },
+        "views": { "type": "number" }
+      },
+      "required": ["title", "slug", "content", "createdAt", "updatedAt", "authorUid"]
+    },
+    "SiteSettings": {
+      "title": "Site Settings",
+      "description": "Global settings for the app",
+      "type": "object",
+      "properties": {
+        "breakingHeadline": { "type": "string" },
+        "featuredArticleId": { "type": "string" },
+        "pinnedArticles": { "type": "array", "items": { "type": "string" } },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles"
+    },
+    "/cachedNews/{articleId}": {
+      "schema": { "$ref": "#/entities/NewsArticle" },
+      "description": "Cached news articles from APIs"
+    },
+    "/bookmarks/{bookmarkId}": {
+      "schema": { "$ref": "#/entities/Bookmark" },
+      "description": "User bookmarks"
+    },
+    "/customPosts/{postId}": {
+      "schema": { "$ref": "#/entities/CustomPost" },
+      "description": "Admin generated news posts"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/SiteSettings" },
+      "description": "Global settings"
+    }
+  }
+}
